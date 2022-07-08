@@ -1,0 +1,12 @@
+TRAIN:
+  DEVICE: "cpu"
+  NUM_EPOCHS: 1
+  LR: 0.00000005
+  ADJUST_LR_AFTER: [15, 20]
+  SAVE_MODEL_AFTER_EACH: 1
+  PRETRAIN_MODEL: "microsoft/layoutlm-base-uncased"
+TEST:
+DATASET:
+  TRAIN_PATH: "./../../data/images/strain/"
+  TEST_PATH: "./../../data/images/stest/"
+  LABELS_PATH: "./../../data/labels.txt"
