@@ -1,0 +1,7 @@
+RESNET50_MODEL_PATH: "./models/vatf/backup/resnet50_model"
+VSGG16_MODEL_PATH: "./models/vatf/backup/vgg16_model"
+XCEPTION_MODEL_PATH: "./models/vatf/backup/xception_model"
+VISION_TRANSFORMER_WEIGHT_PATH: "./models/vision_transformer/backup/ViT_checkpoint.ckpt"
+BERT_WEIGHT_PATH: "./models/bert/backup/Bert_checkpoint.ckpt"
+LAYOUTLM_MODEL_PATH: "./models/layoutlm/backup/layoutlm_model"
+LABELS_PATH: "./data/labels.txt"
