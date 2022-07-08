@@ -1,0 +1,20 @@
+
+# Ubuntu:20.04
+# Python3.8
+# apt install python3-opencv
+# apt install tesseract-ocr
+
+
+pyyaml==5.4.1
+easydict==1.9
+tensorflow==2.8.0
+tensorflow_addons==0.16.1
+tf-models-official==2.7.0
+tensorflow_text==2.8.2
+opencv-python==4.6.0.66
+pytesseract==0.3.9
+datasets==2.2.2
+transformers==4.19.4
+torch==1.11.0
+protobuf==3.20.0
+Flask==2.1.2

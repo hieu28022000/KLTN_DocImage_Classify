@@ -1,0 +1,152 @@
+FROM ubuntu:18.04
+# ==================================================================
+# tools
+# ------------------------------------------------------------------
+RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
+    PIP_INSTALL="python -m pip --no-cache-dir install --upgrade" && \
+    GIT_CLONE="git clone --depth 10" && \
+    rm -rf /var/lib/apt/lists/* \
+           /etc/apt/sources.list.d/cuda.list \
+           /etc/apt/sources.list.d/nvidia-ml.list && \
+    apt-get update && \
+    DEBIAN_FRONTEND=noninteractive $APT_INSTALL \
+        build-essential \
+        ca-certificates \
+        libgl1-mesa-glx \
+        libreoffice \
+        cmake \
+        wget \
+        git \
+        nano \
+        && \
+# ==================================================================
+# python
+# ------------------------------------------------------------------
+    DEBIAN_FRONTEND=noninteractive $APT_INSTALL \
+        software-properties-common \
+        && \
+    DEBIAN_FRONTEND=noninteractive $APT_INSTALL \
+        python3.6 \
+        python3.6-dev \
+        python3.6-tk \
+        python3.6-distutils \
+        && \
+    wget -O ~/get-pip.py \
+        https://bootstrap.pypa.io/pip/3.6/get-pip.py && \
+    python3.6 ~/get-pip.py && \
+    ln -s /usr/bin/python3.6 /usr/local/bin/python3 && \
+    ln -s /usr/bin/python3.6 /usr/local/bin/python && \
+    $PIP_INSTALL \
+        setuptools==59.6.0 \
+        && \
+    $PIP_INSTALL \
+        git+https://github.com/ulikoehler/cv_algorithms.git \
+        tqdm==4.64.0 \
+        numpy==1.18.5 \
+        scipy==1.4.1 \
+        pandas==1.1.5 \
+        scikit-learn==0.24.2 \
+        scikit-image==0.17.2 \
+        matplotlib==3.3.4 \
+        Pillow==7.1.2 \
+        imgaug==0.4.0 \
+        unidecode==1.3.4 \
+        python-Levenshtein==0.12.2 \
+        yacs==0.1.8 \
+        albumentations==1.1.0 \
+        pycocotools==2.0.4 \
+        terminaltables==3.1.10 \
+        torch==1.10.1 \
+        torchvision==0.11.2 \
+        onnx==1.11.0 \
+        onnx_tf==1.10.0 \
+        && \
+# ==================================================================
+# tensorflow
+# ------------------------------------------------------------------
+    $PIP_INSTALL \
+        tensorflow_probability==0.11.1 \
+        tensorflow==2.3.0 \
+        && \
+# ==================================================================
+# opencv
+# ------------------------------------------------------------------
+    $PIP_INSTALL \
+        opencv-python==4.4.0.42 \
+        opencv-contrib-python==4.4.0.42
+
+# ==================================================================
+# other lib
+# ------------------------------------------------------------------
+RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
+    PIP_INSTALL="python -m pip --no-cache-dir install --upgrade" && \
+    $APT_INSTALL \
+    language-pack-en \
+    libcairo2-dev \
+    imagemagick \
+    poppler-utils \
+    poppler-data \
+    tesseract-ocr \
+    && \
+    $PIP_INSTALL \
+    cairocffi==1.2.0 \
+    editdistance==0.6.0 \
+    python-resize-image==1.1.20 \
+    easydict==1.7 \
+    PyYAML==3.12 \
+    imutils==0.5.4 \
+    pdf2image==1.16.0 \
+    git+https://github.com/mpdavis/python-jose.git \
+    cryptography==37.0.2 \
+    pycryptodome==3.14.1 \
+    pytesseract==0.3.8 \
+    tf_slim==1.1.0 \
+    psutil==5.9.1 \
+    colorama==0.4.4
+
+# ==================================================================
+# FLASK lib
+# ------------------------------------------------------------------
+
+RUN PIP_INSTALL="python -m pip --no-cache-dir install --upgrade" && \
+    $PIP_INSTALL bcrypt==3.1.3 \
+    Flask==0.12.5 \
+    Flask-Bcrypt==0.7.1 \
+    Flask-Cors==3.0.2 \
+    Flask-Migrate==2.0.4 \
+    Flask-Script==2.0.5 \
+    flask_restful \
+    uwsgi \
+    gevent \
+    gunicorn \
+    pyclipper \
+    mysql-connector-python \
+    pyxdameraulevenshtein
+
+
+# ==================================================================
+# config & cleanup
+# ------------------------------------------------------------------
+RUN ldconfig && \
+    apt-get clean && \
+    apt-get autoremove && \
+    rm -rf /var/lib/apt/lists/* /tmp/* ~/*
+    
+ENV LC_ALL en_US.UTF-8
+# ==================================================================
+# define project properties
+# ==================================================================
+
+ARG workdir=/server
+ARG apidir=/server
+
+RUN mkdir -p ${workdir}
+ADD . ${workdir}
+EXPOSE 80
+WORKDIR ${apidir}
+
+
+# ===================================================================
+# Run server
+# -------------------------------------------------------------------
+CMD ["python3", "ocr_api.py"]
