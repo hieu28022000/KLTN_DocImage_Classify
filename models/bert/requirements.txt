@@ -1,0 +1,5 @@
+pyyaml==5.4.1
+easydict
+opencv-python
+tf-models-official==2.7.0
+tensorflow

@@ -1,0 +1,19 @@
+TRAIN:
+  DEVICE: "cpu"
+  GPU_ID: "0"
+  NUM_EPOCHS: 100
+  INPUT_SHAPE: [32, 32, 3]
+  LEARNING_RATE: 0.00001
+  WEIGHT_DECAY: 0.0001
+  BATCH_SIZE: 256
+  IMAGE_SIZE: 32
+  PATCH_SIZE: 6
+  PROJECTION_DIM: 64
+  NUM_HEADS: 4
+  TRANSFORMER_LAYERS: 8
+  MLP_HEAD_UNITS: [2048, 1024]
+DATASET:
+  NUM_CLASSES: 7
+  LABELS: "./../../data/labels.txt"
+  TRAIN_PATH: "./../../data/images/strain/"
+  TEST_PATH: "./../../data/images/stest/"

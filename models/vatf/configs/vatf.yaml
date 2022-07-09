@@ -1,0 +1,15 @@
+TRAIN:
+  DEVICE: "cpu"
+  GPU_ID: "0"
+  NUM_EPOCHS: 15
+  LR: 0.00000001
+  MOMENTUM: 0.99
+  ADJUST_LR_AFTER: [8, 12]
+  SAVE_MODEL_AFTER_EACH: 5
+TEST:
+  SIMILARITY_CONFIDENCE: 0.8
+DATASET:
+  LABELS_PATH: "./../../data/labels.txt"
+  TRAIN_FOLDER: "./../../data/images/train/"
+  TEST_FOLDER: "./../../data/images/test/"
+  IMAGE_SIZE: 331,468

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document Image Classify</title>
+</head>
+
+<style>
+    .header {
+        position: relative;
+        padding: 20px;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background: rgb(134, 197, 223);
+        color: rgb(0, 0, 0);
+        text-align: center;
+    }
+
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: rgb(134, 197, 223);
+        color: rgb(0, 0, 0);
+        text-align: center;
+    }
+
+    .body {
+        text-align: center;
+    }
+</style>
+
+
+<body>
+    <!-- Header -->
+    <div class="header">
+        <p><strong>Document Image Classify</strong></p>
+    </div>
+
+    <div class="body">
+        <!-- Choose model name -->
+        <div>
+            <br>
+            <label>Choose a model name:</label>
+            <select id="model_name">
+                <option value="vgg16">VGG16</option>
+                <option value="resnet50">ResNet50</option>
+                <option value="xception">Xception</option>
+                <option value="vision_transformer">Vision Transformer</option>
+                <option value="bert">Bert</option>
+                <option value="layoutlm" selected="selected">LayoutLM</option>
+            </select>
+        </div>
+        
+        <!-- Chose image -->
+        <div>
+            <label>Choose a image:</label>
+            <input type="file"  accept="image/*" id="imageinput"  onchange="loadFile(event)">
+            <p><img id="display" width="200" /></p>
+        </div>
+
+        <!-- Run process -->
+        <p><button type="button" onclick=gettype()>Classify</button></p>
+        <p id="result_class"></p>
+        <p id="result_label"></p>
+        <p id="result_score"></p>
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+        <p>Nguyễn Quang Hiếu - 18520748</p>
+    </div>
+</body>
+
+<script>
+    // Display image
+    var loadFile = function(event) {
+        var image = document.getElementById('display');
+        image.src = URL.createObjectURL(event.target.files[0]);
+    };
+    
+
+    // Button onclick
+    function gettype() {
+        var select_model = document.getElementById("model_name");
+        var model_name = select_model.value;
+
+        var image = document.getElementById('imageinput');
+
+        // const result_class = document.getElementById("result_class");
+        const result_label = document.getElementById("result_label");
+        const result_score = document.getElementById("result_score");
+        // result_class.innerHTML = "Class: ";
+        result_label.innerHTML = "Document type: ";
+        result_score.innerHTML = "Score: ";
+
+        var fd = new FormData()
+        fd.append('model_name', model_name)
+        fd.append('image', image.files[0])
+        const response_api = fetch("http://0.0.0.0:80/classify", {
+            method: 'post',
+            body: fd
+        })
+        .then((response) => response.json())
+        .then((json) => {
+            return json
+        });
+        const convert_predict = async () => {
+            const predict2 = await response_api;
+            console.log('output', predict2)
+
+            // result_class.insertAdjacentText("beforeend", predict2.class);
+            result_label.insertAdjacentText("beforeend", predict2.label);
+            result_score.insertAdjacentText("beforeend", predict2.score);
+        };
+        convert_predict()
+    }
+</script>
+</html>

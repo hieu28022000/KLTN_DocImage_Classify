@@ -1,0 +1,8 @@
+pytesseract
+numpy
+pandas
+datasets
+transformers
+easydict
+torch
+pyyaml==5.4.1
